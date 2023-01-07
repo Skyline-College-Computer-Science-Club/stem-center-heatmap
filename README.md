@@ -7,3 +7,7 @@
 
 <h2>Requirements</h2>
 <p>In order to accomplish our goal we need a few things:</p>
+<ul>
+  <li>Data from Skyline College's STEM Center</li>
+
+</ul>
