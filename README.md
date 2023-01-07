@@ -7,8 +7,10 @@
 
 <h2>Requirements</h2>
 <p>In order to accomplish our goal we need a few things:</p>
+<b>
 <ul>
   <li>Data from Skyline College's STEM Center</li>
   <li>Pandas - Python for data manipulation</li>
   <li>A way to provide those analytics to a end-user</li>
 </ul>
+</b>
