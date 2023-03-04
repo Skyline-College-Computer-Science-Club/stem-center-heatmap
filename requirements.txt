@@ -20,7 +20,7 @@ selenium==4.5.0
 six==1.16.0
 sniffio==1.3.0
 sortedcontainers==2.4.0
-soupsieve==2.3.2.post1
+soupsieve==2.3.2.post1 
 tqdm==4.64.1
 trio==0.22.0
 trio-websocket==0.9.2
