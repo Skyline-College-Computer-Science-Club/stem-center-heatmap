@@ -30,7 +30,7 @@ webschedule_url = "https://webschedule.smccd.edu/"
 driver.get(webschedule_url)
 
 # Select settings for current semester at Skyline
-# If month is July or later, it is Fall semester. Otherwise, Spring
+# If month is July or later, it is Fall semester. Otherwise, it's Spring
 month = datetime.datetime.now().month
 if month >= 7:
     # Fall Semester
