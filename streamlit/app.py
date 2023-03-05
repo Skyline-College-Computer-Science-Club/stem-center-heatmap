@@ -67,18 +67,24 @@ def make_df_with_filter(filts):
 
 
 services = df['Services'].unique()
-s = {}
+
+sel_ser_dict = {}
 c1, c2 = st.columns((2, 7))
 with c1:
     for service in services:
-        s[service] = st.checkbox(service)
+        sel_ser_dict[service] = st.checkbox(service)
+        # print(st.checkbox(service))
 
-ser = [service for service in services if s[service]]
+selected_services = [service for service in services if sel_ser_dict[service]]
 
+# Better way, list not dict
+# with c1:
+#     selected_services = [service for service in services if st.checkbox(service)]
+    
 # MAIN LINE - TAKES IN LIST OF SERVICES, GETS DATAFRAME
 x = make_df_with_filter(['Space to Study (STEM Center)', 'Open Lab (TBA Hours)', 'In-person Tutoring (STEM Center)', 'Space to Study (MESA)', 'Virtual Tutoring', 'Workshop Attendance', 'Fabrication Lab'])
 with c2:
-    x = make_df_with_filter(ser)
+    x = make_df_with_filter(selected_services)
     import seaborn as sns
     import matplotlib.pyplot as plt
     sns.set(rc={'figure.figsize':(11.7,8.27)})
@@ -86,11 +92,3 @@ with c2:
     sns.heatmap(x, cmap='Blues').set_title('Services')
     # sns.heatmap(x, cmap='Blues')
     st.write(fig)
-# import matplotlib.pyplot as plt
-# plt.show()
-
-
-
-# fig, ax = plt.subplots()
-# sns.heatmap(df_col.corr(), ax=ax)
-# st.write(fig)
