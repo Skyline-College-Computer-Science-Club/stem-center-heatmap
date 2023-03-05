@@ -2,7 +2,7 @@
 This surfs San Mateo's https://webschedule.smccd.edu/ website
 and gets all the class information for the curent semester
 at Skyline.
-Takes a minute to run the first time in a new day.
+Takes a minute to run the first time on a new day.
 '''
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
