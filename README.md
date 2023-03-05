@@ -5,6 +5,12 @@
 
 <h2>How to Run Program</h2>
 
+Make sure you have all the necessary python packages installed on your machine.
+
+Do this by running 'pip install -r requirements.txt'. this will install the packages in the requirements.txt file.
+
+If there are any further error, some troubleshooting to install further packages is needed (requirements.txt may not be updated - TODO).
+
 To run the app to display the heatmap with a simple UI,
 1. 'cd' into streamlit/ folder
 2. Run 'streamlit run app.py' in terminal
