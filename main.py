@@ -143,7 +143,7 @@ print(df_week)
 
 # Display DataFrame as basic "heatmap"
 import seaborn as sns
-sns.heatmap(df_week, cmap='Blues').set_title('All Services')
+sns.heatmap(df_week, cmap='Blues').set_title('# of Sessions for All Services')
 # This is needed to display heatmap from terminal
 import matplotlib.pyplot as plt
 plt.show()
