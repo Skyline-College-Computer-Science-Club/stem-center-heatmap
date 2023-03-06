@@ -16,35 +16,41 @@ df = pd.read_csv(cwd + "/(Enc)Data - Coded_SessionLogs.csv")  # make DataFrame f
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', 20)
 
-# Rename columns for name clarity
-df = df.rename(columns={'Unnamed: 0' : 'ID'})
-df = df.rename(columns={'Services' : 'Service'})
-df = df.rename(columns={'Period' : 'Duration'})
+# Make all column names lowercase - pandas naming convention
+df.columns = [col.lower() for col in df.columns]
+
+# Rename columns to follow best practices for DataFrame column names (snake case)
+df = df.rename(columns={'unnamed: 0' : 'id'})
+df = df.rename(columns={'"name"' : 'encrypted_name'})
+df = df.rename(columns={'services' : 'service'})
+df = df.rename(columns={'signintime' : 'sign_in_time'})
+df = df.rename(columns={'signouttime' : 'sign_out_time'})
+df = df.rename(columns={'period' : 'duration'})
 
 # Filter out 'No Sessions' - don't know what 'No Sessions' means, may have to ask Bryan
-filt = (df['Service'] != 'No Sessions')
+filt = (df['service'] != 'No Sessions')
 df = df[filt]
 
-# Convert SignIn and SignOut times to 'datetime' objects so we can get attributes of the time (ex. hour)
-df['SignInTime'] = pd.to_datetime(df['SignInTime'])
-df['SignOutTime'] = pd.to_datetime(df['SignOutTime'])
-# Add 'HourIn', 'HourOut', 'Weekday' columns
-df.insert(7, 'HourIn', df['SignInTime'].apply(lambda x : x.hour))  # get hour and weekday attributes from 'datetime' obj,
-df.insert(8, 'HourOut', df['SignOutTime'].apply(lambda x : x.hour))     # insert at specified column index (ex. 7)
-df.insert(9, 'Weekday', df['SignInTime'].apply(lambda x : x.weekday())) # to keep desired column order
+# Convert sign_in and sign_out times to 'datetime' objects so we can get attributes of the 'datetime' (ex. hour)
+df['sign_in_time'] = pd.to_datetime(df['sign_in_time'])
+df['sign_out_time'] = pd.to_datetime(df['sign_out_time'])
+# Add 'hour_in', 'hour_out', 'weekday' columns
+df.insert(7, 'hour_in', df['sign_in_time'].apply(lambda x : x.hour))  # get hour and weekday attributes from 'datetime' obj,
+df.insert(8, 'hour_out', df['sign_out_time'].apply(lambda x : x.hour))     # insert at specified column index (ex. 7)
+df.insert(9, 'weekday', df['sign_in_time'].apply(lambda x : x.weekday())) # to keep desired column order
 
-# Filter out bad SignIn, SignOutTimes - sessions not within 8AM-8PM and not weekdays
+# Filter out bad sign_in and sign_out times - sessions not within 8AM-8PM and not weekdays
 # (students signed in when STEM Center closed)
 filt = (
-    (df['HourIn'] >= 8) & (df['HourIn'] <= 20) &
-    (df['HourOut'] >= 8) & (df['HourOut'] <= 20) & (df['Weekday'] <= 4)
+    (df['hour_in'] >= 8) & (df['hour_in'] <= 20) &
+    (df['hour_out'] >= 8) & (df['hour_out'] <= 20) & (df['weekday'] <= 4)
 )
 df = df[filt]
 
 # Reset row indices to start at 0 - needed to iterate through the DataFrame rows
 df.reset_index(drop=True, inplace=True)
 
-df['Service'].value_counts()  # just a useful function - *does nothing*
+df['service'].value_counts()  # just a useful function - *does nothing*
 
 
 def make_df_week():
@@ -87,7 +93,7 @@ def get_filter(services):
     filt = [False] * df.shape[0]  # boolean list of all False w/ length # of sessions
     # Update the filter for each passed in service in services
     for service in services:
-        filt = filt | (df['Service'] == service)  # first iteration converts filt from list to Series obj
+        filt = filt | (df['service'] == service)  # first iteration converts filt from list to Series obj
     return filt
 
 # Makes week DataFrame of STEM Center hours - this function uses the two above functions
@@ -112,17 +118,17 @@ def make_df_with_filter(services):
     
     df_week = make_df_week()  # make empty week DataFrame
     
-    # Add # of sessions to week DataFrame using 'HourIn', 'HourOut' and 'Weekday' values as indices
+    # Add # of sessions to week DataFrame using 'hour_in', 'hour_out' and 'weekday' values as indices
     # Loop each row in filtered df
     for i in range(filt_df.shape[0]):
-        # Get hourIn, hourOut, and weekday of i'th row
-        hourIn  = filt_df['HourIn'][i]
-        hourOut = filt_df['HourOut'][i]
-        weekday = filt_df['Weekday'][i]
+        # Get hour_in, hour_out, and weekday of i'th row
+        hour_in  = filt_df['hour_in'][i]
+        hour_out = filt_df['hour_out'][i]
+        weekday = filt_df['weekday'][i]
         
-        # Add 1 to df_week for each hour signed in from hourIn to hourOut inclusive
+        # Add 1 to df_week for each hour signed in from hour_in to hour_out inclusive
         # **EVENTUALLY MIGHT CHANGE TO PRECISION TO THE MINUTE**
-        for hour in range(hourIn, hourOut + 1):
+        for hour in range(hour_in, hour_out + 1):
             df_week.loc[hour][weekday] += 1  # +1 indicates one student session at this hour and day
     return df_week
 
