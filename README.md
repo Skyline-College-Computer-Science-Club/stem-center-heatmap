@@ -13,7 +13,7 @@ If there are any further error, some troubleshooting to install further packages
 
 To run the app to display the heatmap with a simple UI,
 1. 'cd' into streamlit/ folder
-2. Run 'streamlit run app.py' in terminal
+2. Run 'streamlit run app.py' in terminal (if error ver 3.0 or newer pr jinja2; 'pip install Jinja2==3.0.3')
 3. Paste given link into web browser
 
 <h2>Why do we need that?</h2>
