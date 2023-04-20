@@ -1,6 +1,6 @@
 :root {
     --filter-btn-width: 110px;
-    --filter-ddl-extra-width: 180px;
+    --filter-service-ddl-extra-width: 180px;
 }
 
 * {
@@ -23,21 +23,25 @@ header > nav {
 }
 
 header > nav > .logo {
-    /* border: 1px solid green; */
+    /* outline: 1px solid green; */
     margin-left: 60px;
     display: flex;
     justify-content: center;
     align-items: center;
+    /* line-height: 0; */
+    /* align-self: stretch; */
+    cursor: pointer;
 }
 
 header > nav > .logo > img {
-    /* border: 1px solid black; */
+    /* outline: 1px solid black; */
     width: 34px;
     margin-right: 10px;
 }
 
 header > nav > .logo > h3 {
-    /* border: 1px solid black; */
+    /* outline: 1px solid black; */
+    font-size: 20px;
 }
 
 header > nav > select {
@@ -49,12 +53,12 @@ header > nav > select {
 /* Main */
 
 main > p {
-    /* border: 1px solid black; */
+    /* outline: 1px solid black; */
     margin: 0;
 }
 
 .heatmap {
-    border: 1px solid black;
+    outline: 1px solid black;
     width: 40vw;
     display: block;
     /* margin-left: 30%; */
@@ -64,7 +68,7 @@ main > p {
 }
 
 .filters {
-    /* border: 1px solid black; */
+    /* outline: 1px solid black; */
     /* width: 20%; */
     margin-left: 60%;
     margin-right: 10%;
@@ -74,12 +78,12 @@ main > p {
     height: 40px;
 }
 
-/* Testing top */
+/* Testing top buttons */
 .filters > select {
     width: 110px;
 }
 
-/* Testing bottom - better */
+/* Testing bottom btns - better */
 .filters > div {
     outline: 1px solid pink;
     width: var(--filter-btn-width);
@@ -91,62 +95,42 @@ main > p {
     cursor: pointer;
 }
 
-.filters > .service-div {
-    /* border: 1px solid black; */
-}
-
-/* Dropdown list (ddl) */
+/* Dropdown list - ddl */
 .filters > .service-div > .service-ddl {
-    border: 1px solid black;
-    width: calc(var(--filter-btn-width) + var(--filter-ddl-extra-width));
+    outline: 1px solid black;
+    width: calc(var(--filter-btn-width) + var(--filter-service-ddl-extra-width));
     /* height: 200px; */
     position: relative;
-    left: calc(-1 * var(--filter-ddl-extra-width));
-    left: -var(--filter-ddl-extra-width);
+    left: calc(-1 * var(--filter-service-ddl-extra-width)); /* move left */
     display: none;
-    z-index: 9999
+    z-index: 9999;
 }
-
-/* .filters > .service-ddl > .menu {
-    border: 1px solid black;
-    width: inherit;
-    padding-left: 100px;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-} */
 
 .filters > .service-div > .service-ddl > div {
     outline: 0.5px solid black;
 }
 
-.filters > .service-div > .service-ddl button {
+.filters > .service-div > .service-ddl > div > button {
     /* outline: 1px solid red; */
-    height: 100%;
-    /* display: none; */
+    /* height: 100%; */
     border: none;
+    margin: 0;
     padding: 0;
     padding-left: 15px;
-    margin: 0;
     text-decoration: none;
     background: white;
-    font-family: sans-serif;
     font-size: 1rem;
     cursor: pointer;
-    text-align: center;
-    /* transition: background 250ms ease-in-out, transform 150ms ease; */
-    -webkit-appearance: none;
-    -moz-appearance: none;
 }
 
-.filters > .service-div > .service-ddl > div > button > div {
+.filters > .service-div > .service-ddl > div > button > .checkmark {
+    margin-top: 8px;
     position: absolute;
     left: 6px;
-    margin-top: 8px;
     display: none;
 }
 
-.filters > .service-div > .service-ddl li {
+.filters > .service-div > .service-ddl > div > button > li {
     /* outline: 1px solid red; */
     font-size: 16px;
     padding: 8px;

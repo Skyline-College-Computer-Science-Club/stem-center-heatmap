@@ -6,13 +6,9 @@
         <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
         <link rel="icon" type="image/x-icon" href="static/images/stem-center.ico">
         <title>STEM Center Traffic</title>
-        <script>
-
-
-
-        </script>
     </head>
     <body>
+        <h1>PUSH TO GITHUB WITH "git push origin -u build/flask" FIRST THING AFTER DELETING ME</h1>
         <header>
             <nav>
                 <div class="logo">
@@ -27,6 +23,7 @@
         </header>
         <main>
             <p>Filtering by <b>Service: In-person Tutoring (STEM Center)</b>, <b>Course: [MATH-252]Calcu/Analytic Geometry II</b>, and <b>Department: MATH</b></p>
+            <img class="heatmap" src="{{ url_for('visualize') }}">
             <form class="filters">
                 <select>
                     <option disabled selected>Service</option>
@@ -52,18 +49,14 @@
                 <div class="service-div">
                     <button class="service-btn" type="button">Service</button>
                     <div class="service-ddl">
-                        <!-- <ul> -->
-                            {% for service in services %}
-                                <div>
-                                    <button id="{{ service }}-btn"type="button">
-                                        <div class="checkmark">&#x2713;</div>
-                                        <li>{{ service }}</li>
-                                    </button>
-                                </div>
-                                <!-- <li><button>{{ service }}</button></li> -->
-                                <!-- <li>{{ service }}</li> -->
-                            {% endfor %}
-                        <!-- </ul> -->
+                        {% for service in services %}
+                            <div>
+                                <button id="{{ service }}-btn"type="button">
+                                    <div class="checkmark">&#x2713;</div>
+                                    <li>{{ service }}</li>
+                                </button>
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
 
@@ -80,64 +73,50 @@
                 </div>
                 
             </form>
-            <img class="heatmap" src="{{ url_for('visualize') }}">
         </main>
         <script>
 
-            let dropdownShowing = false;
-            let serviceDropdown = document.querySelector(".service-ddl");
-            document.querySelector('.service-btn').addEventListener('click', function() {
-                if (!dropdownShowing) {
+            // Show and hide dropdown list on btn click
+            let serviceDropdown = document.querySelector('.service-ddl');
+            let serviceBtn = document.querySelector('.service-btn');
+            serviceBtn.addEventListener('click', function() {
+                if (serviceDropdown.style.display != "block") {
                     serviceDropdown.style.display = "block";
-                    dropdownShowing = true;
                 } else {
                     serviceDropdown.style.display = "none";
-                    dropdownShowing = false;
                 }
             });
 
             // Hide dropdown if click not on button or not on dropdown
             window.addEventListener('click', function(e) {
-                if (!document.querySelector('.service-ddl').contains(e.target)) {
-                    if (!document.querySelector('.service-btn').contains(e.target)) {
+                if (!serviceDropdown.contains(e.target)) {
+                    if (!serviceBtn.contains(e.target)) {
                         serviceDropdown.style.display = "none";
-                        dropdownShowing = false;
                     }
                 }
             });
 
+            // Add functionality for when option clicked
+            // Make set to track selected services
             var selectedServices = new Set();
+            // Convert passed in python to json to use
             let services = {{ services|tojson }};
-            console.log(typeof services);
             for (let service of services) {
                 services[service] = document.getElementById(`${service}-btn`);
                 services[service].addEventListener('click', function() {
                     console.log(`Clicked ${service}!`);
                     if (services[service].querySelector('.checkmark').style.display == 'block') {
+                        // Uncheck service
                         services[service].querySelector('.checkmark').style.display = 'none';
                         selectedServices.delete(service);
                     } else {
+                        // Check service
                         services[service].querySelector('.checkmark').style.display = 'block';
                         selectedServices.add(service);
                     }
                     console.log(selectedServices);
-                /* document.getElementById(`${service}-btn`).addEventListener('click', function() {
-                    console.log(`Clicked ${service}!`);
-                }) */
                 });
             }
-
-            /*
-            {% for service in services %}
-                console.log({{  service }});
-            {% endfor %}
-            */
-
-            /*
-            var serviceClicked = function() {
-                console.log(this.id);
-            }
-            */
 
         </script>
     </body>
