@@ -105,5 +105,3 @@ def visualize():
     fig.savefig(img)
     img.seek(0)
     return send_file(img, mimetype="img/png")
-
-# HIII
