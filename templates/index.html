@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial scale=1.0">
+        <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+        <link rel="icon" type="image/x-icon" href="static/images/stem-center.ico">
+        <title>STEM Center Traffic</title>
+        <script>
+
+
+
+        </script>
+    </head>
+    <body>
+        <header>
+            <nav>
+                <div class="logo">
+                    <img src="static/images/stem-center.png">
+                    <h3>STEM Center</h3>
+                </div>
+                <select>
+                    <option value="2023 Spring">2023 Spring</option>
+                    <option value="2022 Fall" selected>2022 Fall</option>
+                </select>
+            </nav>
+        </header>
+        <main>
+            <p>Filtering by <b>Service: In-person Tutoring (STEM Center)</b>, <b>Course: [MATH-252]Calcu/Analytic Geometry II</b>, and <b>Department: MATH</b></p>
+            <form class="filters">
+                <select>
+                    <option disabled selected>Service</option>
+                    {% for service in services %}
+                        <option>{{ service }}</option>
+                    {% endfor %}
+                </select>
+                <select>
+                    <option disabled selected>Course</option>
+                    {% for course in courses %}
+                        <option>{{ course }}</option>
+                    {% endfor %}
+                </select>
+                <select>
+                    <option disabled selected>Department</option>
+                    {% for dept in depts %}
+                        <option>{{ dept }}</option>
+                    {% endfor %}
+                </select>
+            </form>
+
+            <form class="filters">
+                <div class="service-div">
+                    <button class="service-btn" type="button">Service</button>
+                    <div class="service-ddl">
+                        <!-- <ul> -->
+                            {% for service in services %}
+                                <div>
+                                    <button id="{{ service }}-btn"type="button">
+                                        <div class="checkmark">&#x2713;</div>
+                                        <li>{{ service }}</li>
+                                    </button>
+                                </div>
+                                <!-- <li><button>{{ service }}</button></li> -->
+                                <!-- <li>{{ service }}</li> -->
+                            {% endfor %}
+                        <!-- </ul> -->
+                    </div>
+                </div>
+
+                <div class="course-div">
+                    <button class="course-btn" type="button">Course</button>
+                    <div class="course-ddl">
+                    </div>
+                </div>
+
+                <div class="dept-div">
+                    <button class="dept-btn" type="button">Department</button>
+                    <div class="dept-ddl">
+                    </div>
+                </div>
+                
+            </form>
+            <img class="heatmap" src="{{ url_for('visualize') }}">
+        </main>
+        <script>
+
+            let dropdownShowing = false;
+            let serviceDropdown = document.querySelector(".service-ddl");
+            document.querySelector('.service-btn').addEventListener('click', function() {
+                if (!dropdownShowing) {
+                    serviceDropdown.style.display = "block";
+                    dropdownShowing = true;
+                } else {
+                    serviceDropdown.style.display = "none";
+                    dropdownShowing = false;
+                }
+            });
+
+            // Hide dropdown if click not on button or not on dropdown
+            window.addEventListener('click', function(e) {
+                if (!document.querySelector('.service-ddl').contains(e.target)) {
+                    if (!document.querySelector('.service-btn').contains(e.target)) {
+                        serviceDropdown.style.display = "none";
+                        dropdownShowing = false;
+                    }
+                }
+            });
+
+            var selectedServices = new Set();
+            let services = {{ services|tojson }};
+            console.log(typeof services);
+            for (let service of services) {
+                services[service] = document.getElementById(`${service}-btn`);
+                services[service].addEventListener('click', function() {
+                    console.log(`Clicked ${service}!`);
+                    if (services[service].querySelector('.checkmark').style.display == 'block') {
+                        services[service].querySelector('.checkmark').style.display = 'none';
+                        selectedServices.delete(service);
+                    } else {
+                        services[service].querySelector('.checkmark').style.display = 'block';
+                        selectedServices.add(service);
+                    }
+                    console.log(selectedServices);
+                /* document.getElementById(`${service}-btn`).addEventListener('click', function() {
+                    console.log(`Clicked ${service}!`);
+                }) */
+                });
+            }
+
+            /*
+            {% for service in services %}
+                console.log({{  service }});
+            {% endfor %}
+            */
+
+            /*
+            var serviceClicked = function() {
+                console.log(this.id);
+            }
+            */
+
+        </script>
+    </body>
+</html>
